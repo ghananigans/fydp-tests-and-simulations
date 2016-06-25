@@ -1,7 +1,9 @@
 CC = gcc
-CFLAGS = -g -Wall
+CFLAGS = -g -Wall -lm
+CCHEADER_SEARCH = -I./lib
 OBJECT_DIR = obj
 SOURCE_DIR = src
+LIB_DIR = lib
 
 .PHONY: default all clean
 
@@ -10,15 +12,18 @@ all: default
 
 HEADERS = $(wildcard $(SOURCE_DIR)/*.h)
 
-GENERATE_OBJECTS = $(OBJECT_DIR)/main.o
+GENERATE_OBJECTS = $(OBJECT_DIR)/main.o $(LIB_DIR)/fft/fft.c
 
 $(OBJECT_DIR)/%.o: $(SOURCE_DIR)/%.c $(HEADERS)
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(CCHEADER_SEARCH) -c $< -o $@
+
+$(OBJECT_DIR)/%.o: $(LIB_DIR)/%.c $(HEADERS)
+	$(CC) $(CFLAGS) $(CCHEADER_SEARCH) -c $< -o $@
 
 .PRECIOUS: $(TARGET) $(OBJECTS)
 
 main: $(GENERATE_OBJECTS)
-	$(CC) $(CFLAGS) $(GENERATE_OBJECTS) -o $@
+	$(CC) $(CFLAGS) $(CCHEADER_SEARCH) $(GENERATE_OBJECTS) -o $@
 
 clean:
 	-rm -f $(OBJECT_DIR)/*.o
