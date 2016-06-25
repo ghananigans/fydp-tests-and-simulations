@@ -12,7 +12,7 @@ all: default
 
 HEADERS = $(wildcard $(SOURCE_DIR)/*.h)
 
-GENERATE_OBJECTS = $(OBJECT_DIR)/main.o $(OBJECT_DIR)/fft.o
+GENERATE_OBJECTS = $(OBJECT_DIR)/main.o $(OBJECT_DIR)/fft.o $(OBJECT_DIR)/phase_shift.o
 
 $(OBJECT_DIR)/%.o: $(SOURCE_DIR)/%.c $(HEADERS)
 	$(CC) $(CFLAGS) $(CCHEADER_SEARCH) -c $< -o $@

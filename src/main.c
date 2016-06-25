@@ -2,10 +2,11 @@
 #include <stdlib.h>
 #include <fft/fft.h>
 #include <math.h>
+#include "phase_shift.h"
 
 int main(void)
 {
-  int N = 1 << 3; // for 2^3 point (i)fft
+  int N = 1 << 6; // for 2^3 point (i)fft
   int k;
   complex v[N], v1[N], scratch[N];
 
@@ -18,18 +19,18 @@ int main(void)
   }
 
   /* FFT, iFFT of v[]: */
-  print_vector("Orig", v, N);
+  print_matlab_vector("Orig", v, N);
   fft( v, N, scratch );
-  print_vector(" FFT", v, N);
+  print_matlab_vector(" FFT", v, N);
   ifft( v, N, scratch );
-  print_vector("iFFT", v, N);
+  print_matlab_vector("iFFT", v, N);
 
   /* FFT, iFFT of v1[]: */
-  print_vector("Orig", v1, N);
+  print_matlab_vector("Orig", v1, N);
   fft( v1, N, scratch );
-  print_vector(" FFT", v1, N);
+  print_matlab_vector(" FFT", v1, N);
   ifft( v1, N, scratch );
-  print_vector("iFFT", v1, N);
+  print_matlab_vector("iFFT", v1, N);
 
   exit(EXIT_SUCCESS);
 }
