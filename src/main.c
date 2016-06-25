@@ -22,15 +22,16 @@ int main(void)
   print_matlab_vector("Orig", v, N);
   fft( v, N, scratch );
   print_matlab_vector(" FFT", v, N);
+  constant_phase_shift(v, N, PI/2);
   ifft( v, N, scratch );
   print_matlab_vector("iFFT", v, N);
 
-  /* FFT, iFFT of v1[]: */
+  /* FFT, iFFT of v1[]:
   print_matlab_vector("Orig", v1, N);
   fft( v1, N, scratch );
   print_matlab_vector(" FFT", v1, N);
   ifft( v1, N, scratch );
-  print_matlab_vector("iFFT", v1, N);
+  print_matlab_vector("iFFT", v1, N); */
 
   exit(EXIT_SUCCESS);
 }
