@@ -38,5 +38,5 @@
 # Always keep .keep files
 !.keep
 
-# ignore the main file (compiled)
-main
+# ignore compiled files
+test_phase_shift

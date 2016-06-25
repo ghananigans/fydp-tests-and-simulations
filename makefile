@@ -12,7 +12,7 @@ all: default
 
 HEADERS = $(wildcard $(SOURCE_DIR)/*.h)
 
-GENERATE_OBJECTS = $(OBJECT_DIR)/main.o $(OBJECT_DIR)/fft.o $(OBJECT_DIR)/phase_shift.o
+TEST_PHASE_SHIFT_OBJECTS = $(OBJECT_DIR)/test_phase_shift.o $(OBJECT_DIR)/fft.o $(OBJECT_DIR)/phase_shift.o
 
 $(OBJECT_DIR)/%.o: $(SOURCE_DIR)/%.c $(HEADERS)
 	$(CC) $(CFLAGS) $(CCHEADER_SEARCH) -c $< -o $@
@@ -22,9 +22,9 @@ $(OBJECT_DIR)/fft.o: $(LIB_DIR)/fft/fft.c $(HEADERS)
 
 .PRECIOUS: $(TARGET) $(OBJECTS)
 
-main: $(GENERATE_OBJECTS)
-	$(CC) $(CFLAGS) $(CCHEADER_SEARCH) $(GENERATE_OBJECTS) -o $@
+test_phase_shift: $(TEST_PHASE_SHIFT_OBJECTS)
+	$(CC) $(CFLAGS) $(CCHEADER_SEARCH) $(TEST_PHASE_SHIFT_OBJECTS) -o $@
 
 clean:
 	-rm -f $(OBJECT_DIR)/*.o
-	-rm -f main
+	-rm -f test_phase_shift

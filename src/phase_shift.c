@@ -4,7 +4,9 @@
 #include <string.h> // memcpy
 
 
-/* http://www.mathworks.com/help/signal/ref/hilbert.html */
+/*
+ * See phase_shift.h for comments.
+ */
 void complexify_real_signal( complex *x, int n, complex *scratch )
 {
   int i;
