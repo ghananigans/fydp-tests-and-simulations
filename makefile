@@ -1,6 +1,6 @@
 CC = gcc
-CFLAGS = -g -Wall -lm
 CCHEADER_SEARCH = -I./lib
+CFLAGS = -g -Wall
 OBJECT_DIR = obj
 SOURCE_DIR = src
 LIB_DIR = lib
@@ -12,12 +12,12 @@ all: default
 
 HEADERS = $(wildcard $(SOURCE_DIR)/*.h)
 
-GENERATE_OBJECTS = $(OBJECT_DIR)/main.o $(LIB_DIR)/fft/fft.c
+GENERATE_OBJECTS = $(OBJECT_DIR)/main.o $(OBJECT_DIR)/fft.o
 
 $(OBJECT_DIR)/%.o: $(SOURCE_DIR)/%.c $(HEADERS)
 	$(CC) $(CFLAGS) $(CCHEADER_SEARCH) -c $< -o $@
 
-$(OBJECT_DIR)/%.o: $(LIB_DIR)/%.c $(HEADERS)
+$(OBJECT_DIR)/fft.o: $(LIB_DIR)/fft/fft.c $(HEADERS)
 	$(CC) $(CFLAGS) $(CCHEADER_SEARCH) -c $< -o $@
 
 .PRECIOUS: $(TARGET) $(OBJECTS)

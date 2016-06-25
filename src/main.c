@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <fft/fft.h>
+#include <math.h>
 
 int main(void)
 {
