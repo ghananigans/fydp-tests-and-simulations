@@ -3,6 +3,8 @@
 
 #include <fft/fft.h>
 
+void complexify_real_signal( complex *, int, complex * );
+
 /*
  * NAME:          constant_phase_shift
  *

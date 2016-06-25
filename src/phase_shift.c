@@ -1,6 +1,43 @@
 #include "phase_shift.h"
 #include <stdio.h> // printf
 #include <math.h> // sin, cos, atan, sqrt, pow
+#include <string.h> // memcpy
+
+
+/* http://www.mathworks.com/help/signal/ref/hilbert.html */
+void complexify_real_signal( complex *x, int n, complex *scratch )
+{
+  int i;
+  real re;
+  real im;
+  complex h[n];
+
+  if (n > 0)
+  {
+    fft(x, n, scratch);
+
+    // set all values in h to be 0
+    memset(h, 0, sizeof(complex) * n);
+    h[0].Re = 1;
+    h[n/2].Re = 1;
+
+    for(i = 1; i < n/2; ++i)
+    {
+      h[i].Re = 2;
+    }
+
+    for (i = 0; i < n; ++i)
+    {
+      re = x[i].Re;
+      im = x[i].Im;
+
+      x[i].Re = re * h[i].Re - im * h[i].Im;
+      x[i].Im = re * h[i].Im + im * h[i].Re;
+    }
+
+    ifft(x, n, scratch);
+  }
+}
 
 /*
  * See phase_shift.h for comments.
