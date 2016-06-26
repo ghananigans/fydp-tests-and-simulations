@@ -2,6 +2,7 @@
 #define __PHASE_SHIFT_H__
 
 #include <fft/fft.h>
+
 /*
  * NAME:          complexify_real_signal
  *
@@ -15,6 +16,8 @@
  *                  - 0 for i > n/2
  *                3) Calculate the element-wise product of x and h
  *                4) Calculate ifft of sequence from 3. Return first n elements
+ *                The need to complexify a real signal is outlined in this link:
+ *                http://www.katjaas.nl/hilbert/hilbert.html.
  *
  * PARAMETERS:
  *  complex *x
@@ -36,6 +39,8 @@ void complexify_real_signal( complex *, int, complex * );
  * DESCRIPTION:   Do a constant phase shift in the frequency domain. The passed
  *                in complex-valued array will be modified in place with the
  *                new values which will be the phase shifted original values.
+ *                http://stackoverflow.com/questions/32584434/changing-the-phase-of-a-signal-in-frequency-domain
+ *                http://stackoverflow.com/questions/25963607/change-phase-of-a-signal-in-frequency-domain-matlab
  *
  * PARAMETERS:
  *  complex *x
