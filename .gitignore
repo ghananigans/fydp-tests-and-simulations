@@ -38,5 +38,6 @@
 # Always keep .keep files
 !.keep
 
-# ignore the main file (compiled)
-main
+# ignore compiled files
+fft_phase_shift_test/fft_phase_shift_test
+
