@@ -39,4 +39,5 @@
 !.keep
 
 # ignore compiled files
-test_phase_shift
+fft_phase_shift_test/fft_phase_shift_test
+

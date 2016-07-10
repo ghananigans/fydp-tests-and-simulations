@@ -7,7 +7,7 @@ LIB_DIR = lib
 
 .PHONY: default all clean
 
-default: main
+default: fft_phase_shift_test
 all: default
 
 HEADERS = $(wildcard $(SOURCE_DIR)/*.h)
@@ -22,9 +22,9 @@ $(OBJECT_DIR)/fft.o: $(LIB_DIR)/fft/fft.c $(HEADERS)
 
 .PRECIOUS: $(TARGET) $(OBJECTS)
 
-test_phase_shift: $(TEST_PHASE_SHIFT_OBJECTS)
+fft_phase_shift_test: $(TEST_PHASE_SHIFT_OBJECTS)
 	$(CC) $(CFLAGS) $(CCHEADER_SEARCH) $(TEST_PHASE_SHIFT_OBJECTS) -o $@
 
 clean:
 	-rm -f $(OBJECT_DIR)/*.o
-	-rm -f test_phase_shift
+	-rm -f fft_phase_shift_test
