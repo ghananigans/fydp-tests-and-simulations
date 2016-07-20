@@ -2,11 +2,11 @@
 
 #define LED_PIN 13
 #define MIC_PIN 0
+#define SPEAKER_PIN DAC1
 
 volatile uint16_t counter;
 volatile uint16_t mic_data;
 volatile uint8_t on_status;
-
 
 void setup()
 {
@@ -39,8 +39,8 @@ void setup()
 
     // Reset counter and fire interrupt when RC value is matched.
     // RC Value calculated as Effective clock rate / Timer frequency 
-    // = (84000000 / 2) / 8000 = 5250.
-    TC_SetRC( TC0, 0, 5250 );
+    // = (84000000 / 2) / 32000 = 1312.5.
+    TC_SetRC( TC0, 0, 1312 );
 
     // Enable the RC Compare Interrupt...
     TC0->TC_CHANNEL[ 0 ].TC_IER = TC_IER_CPCS;
@@ -54,12 +54,19 @@ void setup()
 
 
     /**************************MIC************************/
+    analogReadResolution( 12 );
     mic_data = 0;
+
+
+    /*************************SPEAKER*********************/
+    analogWriteResolution( 12 );
+    pinMode( SPEAKER_PIN, OUTPUT );
 }
 
 void loop()
 {
     Serial.println( mic_data );
+    //analogWrite( SPEAKER_PIN, mic_data << 2 );
 }
 
 void TC0_Handler( void )
@@ -76,5 +83,6 @@ void TC0_Handler( void )
     }
 
     mic_data = analogRead( MIC_PIN );
+    analogWrite( SPEAKER_PIN, mic_data );
 }
 
