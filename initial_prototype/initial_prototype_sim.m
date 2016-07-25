@@ -15,9 +15,12 @@ function [] = initial_prototype_sim( window_size, window_step_size )
     sampling_frequency = 8192; % Hz.
     signal_time_length = 1; % seconds.
     
+    info = audioinfo( 'Testing_123.wav' );
+    signal_time_length = info.Duration;
+    
     % <signal_time_length> * <sampling_frequency> samples.
     x = 0:( 1 / sampling_frequency ):( signal_time_length - ( 1 / sampling_frequency ) );
-    input_signal = cos( 1 * 2 * pi * x) + cos( 5 * 2 * pi * x ); % 1 kHz signal
+    %input_signal = cos( 1 * 2 * pi * x) + cos( 5 * 2 * pi * x ); % 1 kHz signal
     [ input_signal, audio_file_fs ] = audioread( 'Testing_123.wav' );
     input_signal = resample( input_signal, sampling_frequency, audio_file_fs );
     input_signal = hilbert(input_signal);
@@ -56,6 +59,10 @@ function [] = initial_prototype_sim( window_size, window_step_size )
     subplot(4, 1, 4)
     plot(x, input_signal + output_signal);
     
-    sound(real(output_signal));
+    %dump = zeros( 1, length( input_signal ) );
+    
+    % Output original and anti in different channels.
+    output = [ input_signal' output_signal' ];
+    sound( real( output ) );
 end
 
