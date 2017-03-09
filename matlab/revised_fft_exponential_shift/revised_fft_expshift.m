@@ -14,13 +14,13 @@ StopTime = 2 * 8 / fc;       % seconds
 t = (0:dt:StopTime-dt);     % seconds
 
 %compound signal generation
-y = cos(2*pi*fc*t) + cos(2*pi*330*t);
+y = cos(2*pi*fc*t) + cos(2*pi*5*t);
 y = y';
 
-[y, fs] = audioread('two.wav');
-y = y(:,1);
-info = audioinfo('two.wav');
-y=resample(y,8000,fs); %resample so that fs=8000
+% [y, fs] = audioread('two.wav');
+% y = y(:,1);
+% info = audioinfo('two.wav');
+% y=resample(y,8000,fs); %resample so that fs=8000
 fs = 8000;
 t = 0:seconds(1/fs):seconds(info.Duration);
 t = t(1:length(y));
@@ -46,7 +46,7 @@ w = ones(windowsize,1); %windowing function (ones work with SLIDE_BY_1 = 1 only)
 stft_matrix = stft(y,w,SLIDE_BY_1,fftsize);  %matrix containing all the individual frequency points for all window slides
 
 freq_pos = 0:fs/fftsize:fs/2; % frequency vector from 0 to the Nyquist
-latency = single(0.001); %our test value in seconds
+latency = single(0.001 + 0.00325); %our test value in seconds
 d = int32(latency * fs); % samples
                                     
 %phase  is a ROW vector with length == number of freq bins
@@ -80,7 +80,7 @@ wcenter = 26; %calculated to be the offset for taking output samples
 wstart = wcenter;
 
 yi = single(zeros(length(y),1));
-yindex = 1; 
+yindex = 26;
 for r = 1: 1 : size(istft_matrix,1)
     %reconstruct time domain signal using those precomputed in istft_matrix
     yi(yindex) = istft_matrix(r,wstart);
