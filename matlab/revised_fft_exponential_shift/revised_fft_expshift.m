@@ -59,7 +59,7 @@ matrix_size = size(stft_matrix);
 % second)
 for r = 1:(matrix_size(1))
     Y = stft_matrix(r,:); %Y is FFT of the current audio data at hand
-    shifted_matrix(r,:) = Y.*exp(-1i* (phase)); %negative sign for moving yi to the left wrt y
+    shifted_matrix(r,:) = Y.*exp(+1i* (phase)); %negative sign for moving yi to the left wrt y
 end
 
 %STUB: shifted_matrix contains the frequency domain data that it ready
@@ -92,11 +92,7 @@ plot(t,yi);
 latencystr = sprintf('yi delayed by %0.6f seconds', latency);
 title(latencystr );
 
-%below ignores/idealizes the selection of signal from wcenter as opposed to
-%beginning of array
-y_centered = y(wcenter:length(y) -1);
-yi_centered = yi(1:length(yi) - wcenter);
-result = y_centered(1:end - d) + yi_centered(1 + d:end); %bring back y by d, and leave yi in-place
+result = y(1+d+wcenter:end) + yi(1:end -d - wcenter);
 
 subplot(4,1,4);
 plot(t(1:length(result)),result);
