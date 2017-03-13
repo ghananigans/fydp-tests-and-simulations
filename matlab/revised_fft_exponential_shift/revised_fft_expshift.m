@@ -37,7 +37,7 @@ title('hilbert');
 
 y = single(y);
 
-windowsize = 128;
+windowsize = 256;
 fftsize = windowsize;
 SLIDE_BY_1 = 1; %samples to advance the sliding window by (hop size)
 
@@ -77,13 +77,12 @@ end
 %by the calibration sw
 
 wcenter = 26; %calculated to be the offset for taking output samples
-wstart = wcenter;
 
 yi = single(zeros(length(y),1));
 yindex = 1; 
 for r = 1: 1 : size(istft_matrix,1)
     %reconstruct time domain signal using those precomputed in istft_matrix
-    yi(yindex) = istft_matrix(r,wstart);
+    yi(yindex) = istft_matrix(r,wcenter+1);
     yindex = yindex + SLIDE_BY_1;
 end
 
