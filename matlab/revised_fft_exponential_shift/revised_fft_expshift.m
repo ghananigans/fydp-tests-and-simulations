@@ -14,15 +14,15 @@ StopTime = 2 * 8 / fc;       % seconds
 t = (0:dt:StopTime-dt);     % seconds
 
 %compound signal generation
-y = cos(2*pi*fc*t) + cos(2*pi*330*t);
+y = cos(2*pi*fc*t) + cos(2*pi*(fc*2)*t)+ cos(2*pi*(fc*3)*t);
 y = y';
 
-[y, fs] = audioread('two.wav');
-y = y(:,1);
-info = audioinfo('two.wav');
-y=resample(y,8000,fs); %resample so that fs=8000
-fs = 8000;
-t = 0:seconds(1/fs):seconds(info.Duration);
+% [y, fs] = audioread('two.wav');
+% y = y(:,1);
+% info = audioinfo('two.wav');
+% y=resample(y,8000,fs); %resample so that fs=8000
+% fs = 8000;
+% t = 0:seconds(1/fs):seconds(info.Duration);
 t = t(1:length(y));
 
 
@@ -46,11 +46,17 @@ w = ones(windowsize,1); %windowing function (ones work with SLIDE_BY_1 = 1 only)
 stft_matrix = stft(y,w,SLIDE_BY_1,fftsize);  %matrix containing all the individual frequency points for all window slides
 
 freq_pos = 0:fs/fftsize:fs/2; % frequency vector from 0 to the Nyquist
-latency = single(0.001); %our test value in seconds
-d = int32(latency * fs); % samples
+
+wcenter = 26; %calculated to be the sample offset for taking output samples
+wlatency = (wcenter +1)/ fs; %in seconds
+alatency = 0.001;
+air_latency = single(alatency);
+total_latency = single(wlatency + alatency);
+%latency = single(0.001); %our test value in seconds
+d = int32(air_latency * fs); % samples
                                     
 %phase  is a ROW vector with length == number of freq bins
-[phase] = get_antiphase_vector_pos(freq_pos, latency);
+[phase] = get_antiphase_vector_pos(freq_pos, total_latency);
 
 shifted_matrix = single(zeros(size(stft_matrix)));
 %shift each sample in the matrix by phase amount
@@ -76,7 +82,7 @@ end
 %but this adds its own time domain global latency which needs to be accounted for
 %by the calibration sw
 
-wcenter = 26; %calculated to be the offset for taking output samples
+
 
 yi = single(zeros(length(y),1));
 yindex = 1; 
@@ -91,7 +97,7 @@ plot(t,yi);
 latencystr = sprintf('yi delayed by %0.6f seconds', latency);
 title(latencystr );
 
-result = y(1+d+wcenter:end) + yi(1:end -d - wcenter);
+result = y(1+d:end) + yi(1:end -d);
 
 subplot(4,1,4);
 plot(t(1:length(result)),result);
