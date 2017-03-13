@@ -7,22 +7,24 @@
 clear All;
 
 % Time specifications
-fc = 300;                     % hertz
+fc = 280;                     % hertz
 fs = 8000;                % samples per second for constructing the sine wave
 dt = 1/fs;                   % seconds per sample
-StopTime = 2 * 8 / fc;       % seconds
+StopTime = 2 * 16 / fc;       % seconds
 t = (0:dt:StopTime-dt);     % seconds
 
 %compound signal generation
-y = cos(2*pi*fc*t) + cos(2*pi*330*t);
+y = cos(2*pi*fc*t) + cos(2*pi*(fc+150)*t);
 y = y';
 
-[y, fs] = audioread('two.wav');
+filename = 'Testing_123-1kHz.wav';
+[y, fs] = audioread(filename);
+info = audioinfo(filename);
 y = y(:,1);
-info = audioinfo('two.wav');
 y=resample(y,8000,fs); %resample so that fs=8000
 fs = 8000;
 t = 0:seconds(1/fs):seconds(info.Duration);
+
 t = t(1:length(y));
 
 
@@ -76,7 +78,7 @@ end
 %but this adds its own time domain global latency which needs to be accounted for
 %by the calibration sw
 
-wcenter = 26; %calculated to be the offset for taking output samples
+wcenter = 0; %calculated to be the offset for taking output samples
 
 yi = single(zeros(length(y),1));
 yindex = 1; 
@@ -97,7 +99,7 @@ subplot(4,1,4);
 plot(t(1:length(result)),result);
 title('original + yi signal');
 
-%audiowrite('y.wav', (yi),fs);
+audiowrite('y.wav', (yi),fs);
 audiowrite('yi.wav', (yi),fs);
 audiowrite('yr.wav', (result),fs);
 
